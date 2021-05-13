@@ -4,6 +4,7 @@ plugins {
     id 'groovy'
     id "com.gradle.plugin-publish" version "0.14.0"
     id "java-gradle-plugin"
+    id 'maven-publish'
 }
 
 version = "1.0.2"
@@ -48,6 +49,49 @@ dependencies {
     implementation "com.android.tools.build:gradle:4.1.1"
     implementation 'org.ow2.asm:asm:9.0'
     implementation 'org.ow2.asm:asm-commons:9.0'
+}
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier.set("sources")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'com.balckHook'
+            from components.java
+            artifact sourcesJar
+            pom {
+                name = 'tt core'
+                description = 'tt core support'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'tt'
+                        name = 'tt android'
+                        email = 'g_android_dev@52tt.com'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = "http://192.168.8.184:8081/repository/android-private/"
+            credentials {
+                username  ""
+                password  ""
+            }
+        }
+    }
 }
 
 
