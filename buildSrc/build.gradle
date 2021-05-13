@@ -1,0 +1,54 @@
+plugins {
+    id 'java-library'
+    id 'maven'
+    id 'groovy'
+    id "com.gradle.plugin-publish" version "0.14.0"
+    id "java-gradle-plugin"
+}
+
+version = "1.0.2"
+group = "com.aop.balckHook"
+
+repositories {
+    google()
+    jcenter()
+}
+
+gradlePlugin {
+    plugins {
+        blackHookPlugin {
+            id = 'com.balckHook'
+            implementationClass = 'com.blackHook.plugin.BlackHookPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/18824863285/BaseFlutter'
+    vcsUrl = 'https://github.com/18824863285/BaseFlutter.git'
+    description = 'blackHook'
+    tags = ['blackHook', 'aop', 'hook']
+
+    plugins {
+        blackHookPlugin {
+            displayName = 'Gradle blackHook plugin'
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+
+dependencies {
+    implementation gradleApi()//gradle sdk
+    implementation localGroovy()
+    implementation "com.android.tools.build:gradle:4.1.1"
+    implementation 'org.ow2.asm:asm:9.0'
+    implementation 'org.ow2.asm:asm-commons:9.0'
+}
+
+
+
