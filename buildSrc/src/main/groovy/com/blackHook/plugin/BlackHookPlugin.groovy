@@ -39,12 +39,24 @@ class BlackHookPlugin extends Transform implements Plugin<Project> {
 
     @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
-        return project.extensions.blackHook.inputTypes
+        if (BlackHook.CONTENT_CLASS == project.extensions.blackHook.inputTypes) {
+            return TransformManager.CONTENT_CLASS
+        } else if (BlackHook.CONTENT_JARS == project.extensions.blackHook.inputTypes) {
+            return TransformManager.CONTENT_JARS
+        } else if (BlackHook.CONTENT_RESOURCES == project.extensions.blackHook.inputTypes) {
+            return TransformManager.CONTENT_RESOURCES
+        }
+        return TransformManager.CONTENT_CLASS
     }
 
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
-        return project.extensions.blackHook.scopes
+        if (BlackHook.SCOPE_FULL_PROJECT == project.extensions.blackHook.scopes) {
+            return TransformManager.SCOPE_FULL_PROJECT
+        } else if (BlackHook.PROJECT_ONLY == project.extensions.blackHook.scopes) {
+            return TransformManager.PROJECT_ONLY
+        }
+        return TransformManager.SCOPE_FULL_PROJECT
     }
 
     @Override
@@ -62,7 +74,17 @@ class BlackHookPlugin extends Transform implements Plugin<Project> {
         if (blackHook == null) {
             blackHook = new BlackHook()
             blackHook.methodHooker = project.extensions.blackHook.methodHooker
-            blackHook.hookMethodList = project.extensions.blackHook.hookMethodList
+
+            for (int i = 0; i < project.extensions.blackHook.hookMethodList.size(); i++) {
+                HookMethod hookMethod = new HookMethod()
+                hookMethod.className = project.extensions.blackHook.hookMethodList.get(i).className
+                hookMethod.methodName = project.extensions.blackHook.hookMethodList.get(i).methodName
+                hookMethod.descriptor = project.extensions.blackHook.hookMethodList.get(i).descriptor
+                hookMethod.createBytecode = project.extensions.blackHook.hookMethodList.get(i).createBytecode
+                blackHook.hookMethodList.add(hookMethod)
+            }
+
+//            blackHook.hookMethodList = project.extensions.blackHook.hookMethodList
         }
         inputs.each { input ->
             input.directoryInputs.each { directoryInput ->
@@ -77,7 +99,7 @@ class BlackHookPlugin extends Transform implements Plugin<Project> {
             }
         }
 //        println "cost time ${(System.currentTimeMillis() - startTime) / 1000}"
- //       println("====>project.extensions.black.methodHooker"+project.extensions.blackHook.methodHooker)
+        //       println("====>project.extensions.black.methodHooker"+project.extensions.blackHook.methodHooker)
         super.transform(transformInvocation)
 
     }
@@ -86,7 +108,7 @@ class BlackHookPlugin extends Transform implements Plugin<Project> {
         if (directoryInput.file.isDirectory()) {
             directoryInput.file.eachFileRecurse { file ->
                 String name = file.name
-                println("====>file name is1 $name")
+//                println("====>file name is1 $name")
                 if (name.endsWith(".class") && !name.startsWith("R\$drawable")
                         && !"R.class".equals(name) && !"BuildConfig.class".equals(name)) {
 //                    println '----------- deal with "class" file <' + name + '> -----------'
@@ -136,7 +158,7 @@ class BlackHookPlugin extends Transform implements Plugin<Project> {
                 InputStream inputStream = jarFile.getInputStream(jarEntry)
                 //插桩class
 //                println( "jarname:$entryName")
-                println("====>file name is2 $entryName")
+//                println("====>file name is2 $entryName")
                 if (entryName.endsWith(".class") && !entryName.startsWith("R\$")
                         && !"R.class".equals(entryName) && !"BuildConfig.class".equals(entryName)) {
                     //class文件处理

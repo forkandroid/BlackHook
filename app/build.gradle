@@ -2,11 +2,7 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.blackHook.plugin.HookMethod
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
-
-import static com.android.build.gradle.internal.pipeline.TransformManager.SCOPE_FULL_PROJECT
-import static com.android.build.gradle.internal.pipeline.TransformManager.CONTENT_JARS
-import static com.android.build.gradle.internal.pipeline.TransformManager.CONTENT_CLASS
-import static com.android.build.gradle.internal.pipeline.TransformManager.PROJECT_ONLY
+import com.blackHook.plugin.BlackHook
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -127,9 +123,9 @@ if (!isCakHook) return
 
 blackHook {
     //表示要处理的数据类型是什么，CLASSES 表示要处理编译后的字节码(可能是 jar 包也可能是目录)，RESOURCES 表示要处理的是标准的 java 资源
-    inputTypes = CONTENT_CLASS
+    inputTypes BlackHook.CONTENT_CLASS
     //表示Transform 的作用域，这里设置的SCOPE_FULL_PROJECT代表作用域是全工程
-    scopes = SCOPE_FULL_PROJECT
+    scopes BlackHook.SCOPE_FULL_PROJECT
     //表示是否支持增量编译，false不支持
     isIncremental false
     //表示hook的方法

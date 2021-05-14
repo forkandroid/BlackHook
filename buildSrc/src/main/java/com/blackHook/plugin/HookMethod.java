@@ -1,14 +1,19 @@
 package com.blackHook.plugin;
 
+import java.io.Serializable;
+
 import groovy.lang.Closure;
 
-public class HookMethod {
+public class HookMethod implements Serializable {
     String className;
     String methodName;
     String descriptor;
-    Closure createBytecode;
+    Closure<Void> createBytecode;
 
-    public HookMethod(String className, String methodName, String descriptor, Closure createBytecode) {
+    public HookMethod() {
+    }
+
+    public HookMethod(String className, String methodName, String descriptor, Closure<Void> createBytecode) {
         this.className = className;
         this.methodName = methodName;
         this.descriptor = descriptor;
@@ -39,11 +44,11 @@ public class HookMethod {
         this.descriptor = descriptor;
     }
 
-    public Closure getCreateBytecode() {
+    public Closure<Void> getCreateBytecode() {
         return createBytecode;
     }
 
-    public void setCreateBytecode(Closure createBytecode) {
+    public void setCreateBytecode(Closure<Void> createBytecode) {
         this.createBytecode = createBytecode;
     }
 }

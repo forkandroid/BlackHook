@@ -7,8 +7,8 @@ plugins {
     id 'maven-publish'
 }
 
-version = "1.0.2"
-group = "com.aop.balckHook"
+version = "1.0.9"
+group = "com.aop.blackHook"
 
 repositories {
     google()
@@ -87,8 +87,8 @@ publishing {
         maven {
             url = "http://192.168.8.184:8081/repository/android-private/"
             credentials {
-                username  ""
-                password  ""
+                username  "csp"
+                password  "asdzxc123456"
             }
         }
     }

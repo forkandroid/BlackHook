@@ -1,21 +1,27 @@
 package com.blackHook.plugin;
 
-import com.android.build.api.transform.QualifiedContent;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import groovy.lang.Closure;
-import static com.android.build.gradle.internal.pipeline.TransformManager.CONTENT_CLASS;
-import static com.android.build.gradle.internal.pipeline.TransformManager.SCOPE_FULL_PROJECT;
+
+//version:1.0.9
 
 public class BlackHook {
 
     Closure methodHooker;
 
-    List<HookMethod> hookMethodList;
+    List<HookMethod> hookMethodList = new ArrayList<>();
 
-    Set<QualifiedContent.ContentType> inputTypes = CONTENT_CLASS;
+    public static final String CONTENT_CLASS = "CONTENT_CLASS";
+    public static final String CONTENT_JARS = "CONTENT_JARS";
+    public static final String CONTENT_RESOURCES = "CONTENT_RESOURCES";
 
-    Set<? super QualifiedContent.Scope> scopes = SCOPE_FULL_PROJECT;
+    public static final String SCOPE_FULL_PROJECT = "SCOPE_FULL_PROJECT";
+    public static final String PROJECT_ONLY = "PROJECT_ONLY";
+
+    String inputTypes = CONTENT_CLASS;
+
+    String scopes = SCOPE_FULL_PROJECT;
 
     boolean isIncremental = false;
 
@@ -35,19 +41,19 @@ public class BlackHook {
         this.hookMethodList = hookMethodList;
     }
 
-    public Set<QualifiedContent.ContentType> getInputTypes() {
+    public String getInputTypes() {
         return inputTypes;
     }
 
-    public void setInputTypes(Set<QualifiedContent.ContentType> inputTypes) {
+    public void setInputTypes(String inputTypes) {
         this.inputTypes = inputTypes;
     }
 
-    public Set<? super QualifiedContent.Scope> getScopes() {
+    public String getScopes() {
         return scopes;
     }
 
-    public void setScopes(Set<? super QualifiedContent.Scope> scopes) {
+    public void setScopes(String scopes) {
         this.scopes = scopes;
     }
 
