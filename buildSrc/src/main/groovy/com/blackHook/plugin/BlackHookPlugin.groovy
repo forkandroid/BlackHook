@@ -74,7 +74,7 @@ class BlackHookPlugin extends Transform implements Plugin<Project> {
         if (blackHook == null) {
             blackHook = new BlackHook()
             blackHook.methodHooker = project.extensions.blackHook.methodHooker
-
+            blackHook.isNeedLog = project.extensions.blackHook.isNeedLog
             for (int i = 0; i < project.extensions.blackHook.hookMethodList.size(); i++) {
                 HookMethod hookMethod = new HookMethod()
                 hookMethod.className = project.extensions.blackHook.hookMethodList.get(i).className

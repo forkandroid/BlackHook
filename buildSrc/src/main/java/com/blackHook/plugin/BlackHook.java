@@ -23,6 +23,8 @@ public class BlackHook {
 
     String scopes = SCOPE_FULL_PROJECT;
 
+    boolean isNeedLog = false;
+
     boolean isIncremental = false;
 
     public Closure getMethodHooker() {
@@ -63,5 +65,13 @@ public class BlackHook {
 
     public void setIsIncremental(boolean incremental) {
         isIncremental = incremental;
+    }
+
+    public boolean getIsNeedLog() {
+        return isNeedLog;
+    }
+
+    public void setIsNeedLog(boolean needLog) {
+        isNeedLog = needLog;
     }
 }

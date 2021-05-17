@@ -9,68 +9,76 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.blackHook'
 apply from: '../app/test.gradle'
 
+/**
+ * 返回hook线程构造函数的字节码
+ */
 void createHookThreadByteCode(MethodVisitor mv, String className) {
-    mv.visitFieldInsn(Opcodes.GETSTATIC, "com/quwan/tt/asmdemoapp/ThreadCheck", "INSTANCE", "Lcom/quwan/tt/asmdemoapp/ThreadCheck;")
+    mv.visitFieldInsn(Opcodes.GETSTATIC, "com/csp/myapplication/ThreadCheck", "INSTANCE", "Lcom/csp/myapplication/ThreadCheck;")
     mv.visitLdcInsn(className)
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/quwan/tt/asmdemoapp/ThreadCheck", "printThread", "(Ljava/lang/String;)V", false)
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/csp/myapplication/ThreadCheck", "printThread", "(Ljava/lang/String;)V", false)
 }
 
-void startHook() {
-
-//    addHookMethod("java/lang/Thread", "<init>", "()V", { MethodVisitor mv ->
-//        createHookThreadByteCode(mv, "java/lang/Thread")
-//    })
-//
-//    addHookMethod("android/os/AsyncTask", "<init>", "()V", { MethodVisitor mv ->
-//        createHookThreadByteCode(mv, "android/os/AsyncTask")
-//    })
-//
-//    addHookMethod("android/os/HandlerThread", "<init>", "()V", { MethodVisitor mv ->
-//        createHookThreadByteCode(mv, "android/os/HandlerThread")
-//    })
-//
-    addHookMethod("com/quwan/tt/asmdemoapp/BaseActivity", "getFactory2", "()Landroid/view/LayoutInflater\$Factory2;", { MethodVisitor mv ->
-        mv.visitTypeInsn(Opcodes.NEW, "com/quwan/tt/asmdemoapp/ImageViewFactory2")
-        mv.visitInsn(Opcodes.DUP)
-        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/quwan/tt/asmdemoapp/ImageViewFactory2", "<init>", "()V", false)
-    })
-
-//    blackHook {
-//        isLog true
-//        text ""
-//        hookMethodList [
-//               HookMethod("","","",{MethodVisitor mv ->
-//
-//               })
-//        ]
-////        methodHooker = { MethodVisitor mv, int opcode, String className, String methodName, String descriptor, boolean isInterface ->
-////            System.out.println("====>owner123:" + className);
-////            System.out.println("====>methodName:" + methodName)
-////            System.out.println("====>descriptor:" + descriptor)
-////
-////            for (int i = 0; i < blackHook.blackHookList.size(); i++) {
-////                def hookMethod = blackHook.blackHookList.get(i)
-////                if (className == hookMethod.className && methodName == hookMethod.methodName && descriptor == hookMethod.descriptor) {
-////                    hookMethod.createBytecode.call(mv)
-////                }
-////            }
-////
-////        }
-//    }
-}
-
+/**
+ * 返回需要被hook的方法
+ */
 List<HookMethod> getHookMethods() {
     List<HookMethod> hookMethodList = new ArrayList<>()
     hookMethodList.add(new HookMethod("java/lang/Thread", "<init>", "()V", { MethodVisitor mv -> createHookThreadByteCode(mv, "java/lang/Thread") }))
     hookMethodList.add(new HookMethod("android/os/AsyncTask", "<init>", "()V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/AsyncTask") }))
     hookMethodList.add(new HookMethod("android/os/HandlerThread", "<init>", "()V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/HandlerThread") }))
-    hookMethodList.add(new HookMethod("com/quwan/tt/asmdemoapp/BaseActivity", "getFactory2", "()Landroid/view/LayoutInflater\$Factory2;", { MethodVisitor mv ->
-        mv.visitTypeInsn(Opcodes.NEW, "com/quwan/tt/asmdemoapp/ImageViewFactory2")
-        mv.visitInsn(Opcodes.DUP)
-        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/quwan/tt/asmdemoapp/ImageViewFactory2", "<init>", "()V", false)
+    hookMethodList.add(new HookMethod("com/quwan/tt/asmdemoapp/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
+        println("====>com/quwan/tt/asmdemoapp/MainActivity")
+        methodVisitor.visitLdcInsn("====>MainActivity")
+        methodVisitor.visitLdcInsn("\u6d4b\u8bd5\u63d2\u5165\u65e5\u5fd7")
+        methodVisitor.visitMethodInsn(INVOKESTATIC, "android/util/Log", "i", "(Ljava/lang/String;Ljava/lang/String;)I", false)
+        methodVisitor.visitInsn(POP)
     }))
-
     return hookMethodList
+}
+
+/**
+ * 用DSL的方式使用插件
+ */
+def startHook() {
+    blackHook {
+        //表示要处理的数据类型是什么，CLASSES 表示要处理编译后的字节码(可能是 jar 包也可能是目录)，RESOURCES 表示要处理的是标准的 java 资源
+        inputTypes BlackHook.CONTENT_CLASS
+        //表示Transform 的作用域，这里设置的SCOPE_FULL_PROJECT代表作用域是全工程
+        scopes BlackHook.SCOPE_FULL_PROJECT
+        //表示是否支持增量编译，false不支持
+        isIncremental false
+        //是否打印扫描到的方法的信息，包含类名，方法名，方法签名
+        isNeedLog true
+        //表示需要被hook的方法
+        hookMethodList = getHookMethods()
+    }
+}
+
+/**
+ * 是否是线下环境，线下环境才可以依赖BlackHook
+ */
+boolean isCanApplyBlackHook() {
+    boolean isCanApplyBlackHook = false
+    def file = rootProject.file("local.properties")
+    if (file.exists()) {
+        DataInputStream dataInputStream = rootProject.file("local.properties").newDataInputStream()
+        Properties properties = new Properties()
+        properties.load(dataInputStream)
+        if (!properties.containsKey("isNeedBlackHook") || properties.getProperty("isNeedBlackHook") == "true") {
+            isCanApplyBlackHook = true
+        }
+    } else {
+        def isNeedBlackHook = project.properties.getOrDefault("IS_NEED_BLACK_HOOK", false) == "true"
+        if (isNeedBlackHook) {
+            isCanApplyBlackHook = true
+        }
+    }
+    return isCanApplyBlackHook
+}
+
+if (isCanApplyBlackHook()) {
+    apply plugin: 'com.blackHook'
+    startHook()
 }
 
 

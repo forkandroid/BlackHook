@@ -1,5 +1,7 @@
 package com.blackHook.plugin;
 
+import com.android.ddmlib.Log;
+
 import org.objectweb.asm.commons.AdviceAdapter;
 
 class AllMethodVisitor extends AdviceAdapter {
@@ -22,6 +24,9 @@ class AllMethodVisitor extends AdviceAdapter {
     @Override
     public void visitMethodInsn(int opcode, String owner, String methodName, String descriptor, boolean isInterface) {
         super.visitMethodInsn(opcode, owner, methodName, descriptor, isInterface);
+        if (blackHook.isNeedLog){
+            System.out.println("====>methodInfo:"+"className:"+owner+",methodName:"+methodName+",descriptor:"+descriptor);
+        }
         if (blackHook != null && blackHook.hookMethodList != null && blackHook.hookMethodList.size() > 0) {
             for (int i = 0; i < blackHook.hookMethodList.size(); i++) {
                 HookMethod hookMethod = blackHook.hookMethodList.get(i);
