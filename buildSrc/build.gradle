@@ -7,10 +7,9 @@ plugins {
     id 'maven-publish'
 }
 
-//1.1.0版本升级gradle版本到4.2.0
+version = "1.0.2"
+group = "com.tt.plugin.blackHook"
 
-version = "1.1.4"
-group = "com.aop.blackHook"
 
 repositories {
     google()
@@ -20,7 +19,7 @@ repositories {
 gradlePlugin {
     plugins {
         blackHookPlugin {
-            id = 'com.balckHook'
+            id = 'com.tt.blackHook'
             implementationClass = 'com.blackHook.plugin.BlackHookPlugin'
         }
     }
@@ -62,12 +61,14 @@ task sourcesJar(type: Jar) {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'com.balckHook'
+            artifactId = 'blackHook'
+            archivesBaseName = 'blackHook'
             from components.java
             artifact sourcesJar
             pom {
                 name = 'tt core'
                 description = 'tt core support'
+                artifactId = 'blackHook'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -93,6 +94,7 @@ publishing {
                 password  "asdzxc123456"
             }
         }
+
     }
 }
 
