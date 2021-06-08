@@ -2,10 +2,10 @@ package com.quwan.tt.asmdemoapp
 
 import android.util.Log
 
-object ThreadCheck {
+class ThreadCheck {
 
     var isCanAppendLog = false
-    private const val tag = "====>ThreadCheck"
+    private val tag = "====>ThreadCheck"
 
     fun printThread(name : String){
 

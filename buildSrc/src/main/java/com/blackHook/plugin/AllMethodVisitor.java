@@ -1,7 +1,5 @@
 package com.blackHook.plugin;
 
-import com.android.ddmlib.Log;
-
 import org.objectweb.asm.commons.AdviceAdapter;
 
 class AllMethodVisitor extends AdviceAdapter {
@@ -10,7 +8,7 @@ class AllMethodVisitor extends AdviceAdapter {
     private BlackHook blackHook;
 
     protected AllMethodVisitor(BlackHook blackHook, org.objectweb.asm.MethodVisitor methodVisitor, int access, String name, String descriptor, String className) {
-        super(ASM6, methodVisitor, access, name, descriptor);
+        super(ASM5, methodVisitor, access, name, descriptor);
         this.blackHook = blackHook;
         this.methodName = name;
         this.className = name;

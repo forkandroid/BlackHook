@@ -12,6 +12,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 //        val imageView: ImageView =findViewById(R.id.iv)
 //        imageView.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
+        println("====>MainActivity")
         Thread()
         object : AsyncTask<Void?, Void?, Void?>() {
             override fun doInBackground(vararg params: Void?): Void? {
@@ -19,7 +20,8 @@ class MainActivity : BaseActivity() {
             }
 
         }.execute()
-
+        Thread()
+        Thread()
         HandlerThread("test")
     }
 

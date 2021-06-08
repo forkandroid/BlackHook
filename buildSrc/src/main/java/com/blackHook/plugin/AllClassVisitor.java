@@ -2,7 +2,7 @@ package com.blackHook.plugin;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import static groovyjarjarasm.asm.Opcodes.ASM6;
+import static org.objectweb.asm.Opcodes.ASM6;
 
 
 public class AllClassVisitor extends ClassVisitor {
