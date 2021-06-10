@@ -8,6 +8,7 @@ import static org.objectweb.asm.Opcodes.ASM6;
 public class AllClassVisitor extends ClassVisitor {
     private String className;
     private BlackHook blackHook;
+    private String superClassName;
 
     public AllClassVisitor(ClassVisitor classVisitor, BlackHook blackHook) {
         super(ASM6, classVisitor);
@@ -18,11 +19,12 @@ public class AllClassVisitor extends ClassVisitor {
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
         className = name;
+        superClassName = superName;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
-        return new AllMethodVisitor(blackHook, mv, access, name, descriptor, className);
+        return new AllMethodVisitor(blackHook, mv, access, name, descriptor, className, superClassName);
     }
 }

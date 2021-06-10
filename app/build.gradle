@@ -20,6 +20,13 @@ void createHookThreadByteCode(MethodVisitor mv, String className) {
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/quwan/tt/asmdemoapp/ThreadCheck", "printThread", "(Ljava/lang/String;)V", false)
 }
 
+void createHookServiceByteCode(MethodVisitor mv) {
+    mv.visitTypeInsn(Opcodes.NEW, "com/quwan/tt/asmdemoapp/ServiceHook")
+    mv.visitInsn(Opcodes.DUP)
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/quwan/tt/asmdemoapp/ServiceHook", "<init>", "()V", false)
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/quwan/tt/asmdemoapp/ServiceHook", "printStartServiceStackTrace", "()V", false)
+}
+
 /**
  * 返回需要被hook的方法
  */
@@ -30,11 +37,21 @@ List<HookMethod> getHookMethods() {
     hookMethodList.add(new HookMethod("android/os/HandlerThread", "<init>", "(Ljava/lang/String;)V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/HandlerThread") }))
     hookMethodList.add(new HookMethod("com/quwan/tt/asmdemoapp/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
         println("====>com/quwan/tt/asmdemoapp/MainActivity")
-        methodVisitor.visitLdcInsn("====>MainActivity")
-        methodVisitor.visitLdcInsn("\u6d4b\u8bd5\u63d2\u5165\u65e5\u5fd7")
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "android/util/Log", "i", "(Ljava/lang/String;Ljava/lang/String;)I", false)
-        methodVisitor.visitInsn(POP)
+        mv.visitLdcInsn("====>MainActivity123")
+        mv.visitLdcInsn("\u6d4b\u8bd5\u63d2\u5165\u65e5\u5fd7")
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "android/util/Log", "i", "(Ljava/lang/String;Ljava/lang/String;)I", false)
+        mv.visitInsn(Opcodes.POP)
     }))
+
+    hookMethodList.add(new HookMethod("android/app/Service", "startForeground", "(ILandroid/app/Notification;)V", { MethodVisitor mv ->
+        println("====>startForeground")
+        createHookServiceByteCode(mv)
+    }))
+    hookMethodList.add(new HookMethod("android/app/Service", "startForeground", "(ILandroid/app/Notification;I)V", { MethodVisitor mv ->
+        println("====>startForeground")
+        createHookServiceByteCode(mv)
+    }))
+
     return hookMethodList
 }
 
