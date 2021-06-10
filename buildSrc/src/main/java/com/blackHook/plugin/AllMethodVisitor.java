@@ -14,8 +14,8 @@ class AllMethodVisitor extends AdviceAdapter {
         this.methodName = name;
         this.className = className;
         this.superClassName = superClassName;
-        System.out.println("====>className:"+className);
-        System.out.println("====>superClassName:"+superClassName);
+        System.out.println("====>className:" + className);
+        System.out.println("====>superClassName:" + superClassName);
     }
 
     @Override
@@ -26,18 +26,17 @@ class AllMethodVisitor extends AdviceAdapter {
     @Override
     public void visitMethodInsn(int opcode, String owner, String methodName, String descriptor, boolean isInterface) {
         super.visitMethodInsn(opcode, owner, methodName, descriptor, isInterface);
-        if (blackHook.isNeedLog){
-            System.out.println("====>methodInfo:"+"className:"+owner+",methodName:"+methodName+",descriptor:"+descriptor);
+        if (blackHook.isNeedLog) {
+            System.out.println("====>methodInfo:" + "className:" + owner + ",methodName:" + methodName + ",descriptor:" + descriptor);
         }
         if (blackHook != null && blackHook.hookMethodList != null && blackHook.hookMethodList.size() > 0) {
             for (int i = 0; i < blackHook.hookMethodList.size(); i++) {
                 HookMethod hookMethod = blackHook.hookMethodList.get(i);
-                if ((owner.equals(hookMethod.className) || superClassName.equals(hookMethod.className)) && methodName.equals(hookMethod.methodName) && descriptor.equals(hookMethod.descriptor)) {
+                if ((owner.equals(hookMethod.className) || superClassName.equals(hookMethod.className) || className.equals(hookMethod.className)) && methodName.equals(hookMethod.methodName) && descriptor.equals(hookMethod.descriptor)) {
                     hookMethod.createBytecode.call(mv);
                     break;
                 }
             }
         }
-
     }
 }
