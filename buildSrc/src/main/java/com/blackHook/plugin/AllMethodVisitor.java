@@ -14,8 +14,8 @@ class AllMethodVisitor extends AdviceAdapter {
         this.methodName = name;
         this.className = className;
         this.superClassName = superClassName;
-        System.out.println("====>className:" + className);
-        System.out.println("====>superClassName:" + superClassName);
+//        System.out.println("====>className:" + className);
+//        System.out.println("====>superClassName:" + superClassName);
     }
 
     @Override
