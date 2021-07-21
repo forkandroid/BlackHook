@@ -8,7 +8,7 @@ plugins {
 }
 
 version = "1.0.1"
-group = "com.csp.blackHook"
+group = "com.hook.blackHook"
 
 
 repositories {
@@ -20,7 +20,7 @@ gradlePlugin {
     plugins {
         blackHookPlugin {
 //            artifactId = 'blackHook'
-            id = 'com.csp.blackHook.killer'
+            id = 'com.hook.blackHook'
             implementationClass = 'com.blackHook.plugin.BlackHookPlugin'
         }
 

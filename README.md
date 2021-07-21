@@ -15,7 +15,7 @@
 
          buildscript {
              dependencies {
-               classpath 'com.csp.blackHook:buildSrc:1.0.1'
+               classpath 'com.hook.blackHook:buildSrc:1.0.1'
              }
          }
 
@@ -29,7 +29,7 @@
 
 
  ```
-         apply plugin: 'com.csp.blackHook.killer'
+         apply plugin: 'com.hook.blackHook'
 
          List<HookMethod> getHookMethods() {
            List<HookMethod> hookMethodList = new ArrayList<>()
