@@ -1,4 +1,4 @@
- # balckHook
+ # blackHook
 
    简介\
          BlackHook 是一个编译时插桩插件，基于ASM+Tranfrom实现，理论上可以hook任意一个java方法或者kotlin方法，只要代码对应的字节码可以在编译阶段被Tranfrom扫描到，
@@ -25,8 +25,8 @@
 
          2. 在app module下的build.gradle添加如下代码，hookMethodList是需要hook的方法的集合，每次hook一个新的方法的时候，新建一个HookMethod对象，\
          传入hook的类的路径，方法名，方法签名，插入字节码的闭包即可，如下代码所示，hook startService()方法和startForegroundService()方法
-         
-         
+
+
 
  ```
          apply plugin: 'com.csp.blackHook.killer'
