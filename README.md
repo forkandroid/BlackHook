@@ -15,7 +15,7 @@
 
          buildscript {
              dependencies {
-               classpath 'com.csp.blackHook:buildSrc:1.0.0'
+               classpath 'com.csp.blackHook:buildSrc:1.0.1'
              }
          }
 
@@ -64,4 +64,3 @@
              hookMethodList = getHookMethods()
          }
  ```
- 
