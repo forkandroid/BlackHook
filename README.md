@@ -6,7 +6,7 @@
    优点\
          1. 用DSL(领域特定语言)使用该插件，使用简单，配置灵活，而且插入的字节码可以使用ASM Bytecode Viewer Support Kotlin 插件自动生成，上手难度低\
          2. 理论上可以hook任意一个java方法，只要代码对应的字节码可以在编译阶段被Tranfrom扫描到\
-         3. 基于ASM+Tranfrom实现，在编译阶段直接修改字节码，效率高，兼容性问题少\
+         3. 基于ASM+Tranfrom实现，在编译阶段直接修改字节码，效率高，兼容性问题少
 
    使用\
          1. 在工程根目录下的gradle添加如下代码
@@ -21,7 +21,7 @@
 
  ```
 
-         2. 在app module下的build.gradle添加如下代码，hookMethodList是需要hook的方法的集合，每次hook一个新的方法的时候，新建一个HookMethod对象，
+         2. 在app module下的build.gradle添加如下代码，hookMethodList是需要hook的方法的集合，每次hook一个新的方法的时候，新建一个HookMethod对象，\
          传入hook的类的路径，方法名，方法签名，插入字节码的闭包即可，如下代码所示，hook startService()方法和startForegroundService()方法
 
  ```
