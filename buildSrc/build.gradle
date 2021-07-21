@@ -7,8 +7,8 @@ plugins {
     id 'maven-publish'
 }
 
-version = "1.0.6"
-group = "com.tt.plugin.blackHook"
+version = "1.0.0"
+group = "com.csp.blackHook"
 
 
 repositories {
@@ -19,21 +19,24 @@ repositories {
 gradlePlugin {
     plugins {
         blackHookPlugin {
-            id = 'com.tt.blackHook'
+//            artifactId = 'blackHook'
+            id = 'com.csp.blackHook.killer'
             implementationClass = 'com.blackHook.plugin.BlackHookPlugin'
         }
+
     }
 }
 
 pluginBundle {
-    website = 'https://github.com/18824863285/BaseFlutter'
-    vcsUrl = 'https://github.com/18824863285/BaseFlutter.git'
-    description = 'blackHook'
-    tags = ['blackHook', 'aop', 'hook']
+    website = 'https://github.com/18824863285/BlackHook'
+    vcsUrl = 'https://github.com/18824863285/BlackHook.git'
+    description = 'java Hook 插件，几乎可以hook一切java方法'
+    tags = ['blackHook', 'aop', 'hook', 'killer']
 
     plugins {
         blackHookPlugin {
-            displayName = 'Gradle blackHook plugin'
+            displayName = 'blackHook'
+//            artifactId = 'blackHook'
         }
     }
 }
@@ -58,45 +61,6 @@ task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'blackHook'
-            archivesBaseName = 'blackHook'
-            from components.java
-            artifact sourcesJar
-            pom {
-                name = 'tt core'
-                description = 'tt core support'
-                artifactId = 'blackHook'
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'tt'
-                        name = 'tt android'
-                        email = 'g_android_dev@52tt.com'
-                    }
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            url = "http://192.168.8.184:8081/repository/android-private/"
-            credentials {
-                username  "csp"
-                password  "asdzxc123456"
-            }
-        }
-
-    }
-}
 
 
 

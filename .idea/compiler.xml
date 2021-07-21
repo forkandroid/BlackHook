@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
       <module name="AsmDemoApp.buildSrc" target="1.8" />
+      <module name="BlackHook.buildSrc" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
