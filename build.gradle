@@ -3,14 +3,10 @@ buildscript {
     ext.kotlin_version = "1.4.21"
     repositories {
         google()
-//        jcenter()
-        maven {
-            url "http://192.168.8.184:8081/repository/all-proxy/"
-        }
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "com.android.tools.build:gradle:4.2.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'digital.wup:android-maven-publish:3.6.2'
         // NOTE: Do not place your application dependencies here; they belong
@@ -21,10 +17,6 @@ buildscript {
 allprojects {
     repositories {
         google()
-//        jcenter()
-        maven {
-            url "http://192.168.8.184:8081/repository/all-proxy/"
-        }
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     }
 }

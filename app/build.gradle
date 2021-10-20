@@ -33,24 +33,24 @@ void createHookServiceByteCode(MethodVisitor mv) {
 List<HookMethod> getHookMethods() {
     List<HookMethod> hookMethodList = new ArrayList<>()
     hookMethodList.add(new HookMethod("java/lang/Thread", "<init>", "()V", { MethodVisitor mv -> createHookThreadByteCode(mv, "java/lang/Thread") }))
-    hookMethodList.add(new HookMethod("android/os/AsyncTask", "<init>", "()V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/AsyncTask") }))
-    hookMethodList.add(new HookMethod("android/os/HandlerThread", "<init>", "(Ljava/lang/String;)V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/HandlerThread") }))
-    hookMethodList.add(new HookMethod("com/quwan/tt/asmdemoapp/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
-        println("====>com/quwan/tt/asmdemoapp/MainActivity")
-        mv.visitLdcInsn("====>MainActivity123")
-        mv.visitLdcInsn("\u6d4b\u8bd5\u63d2\u5165\u65e5\u5fd7")
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "android/util/Log", "i", "(Ljava/lang/String;Ljava/lang/String;)I", false)
-        mv.visitInsn(Opcodes.POP)
-    }))
-
-    hookMethodList.add(new HookMethod("android/app/Service", "startForeground", "(ILandroid/app/Notification;)V", { MethodVisitor mv ->
-        println("====>startForeground")
-        createHookServiceByteCode(mv)
-    }))
-    hookMethodList.add(new HookMethod("android/app/Service", "startForeground", "(ILandroid/app/Notification;I)V", { MethodVisitor mv ->
-        println("====>startForeground")
-        createHookServiceByteCode(mv)
-    }))
+//    hookMethodList.add(new HookMethod("android/os/AsyncTask", "<init>", "()V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/AsyncTask") }))
+//    hookMethodList.add(new HookMethod("android/os/HandlerThread", "<init>", "(Ljava/lang/String;)V", { MethodVisitor mv -> createHookThreadByteCode(mv, "android/os/HandlerThread") }))
+//    hookMethodList.add(new HookMethod("com/quwan/tt/asmdemoapp/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
+//        println("====>com/quwan/tt/asmdemoapp/MainActivity")
+//        mv.visitLdcInsn("====>MainActivity123")
+//        mv.visitLdcInsn("\u6d4b\u8bd5\u63d2\u5165\u65e5\u5fd7")
+//        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "android/util/Log", "i", "(Ljava/lang/String;Ljava/lang/String;)I", false)
+//        mv.visitInsn(Opcodes.POP)
+//    }))
+//
+//    hookMethodList.add(new HookMethod("android/app/Service", "startForeground", "(ILandroid/app/Notification;)V", { MethodVisitor mv ->
+//        println("====>startForeground")
+//        createHookServiceByteCode(mv)
+//    }))
+//    hookMethodList.add(new HookMethod("android/app/Service", "startForeground", "(ILandroid/app/Notification;I)V", { MethodVisitor mv ->
+//        println("====>startForeground")
+//        createHookServiceByteCode(mv)
+//    }))
 
     return hookMethodList
 }
